@@ -36,7 +36,7 @@ plugins {
     id("java-library")
 }
 
-group = "org.example"
+group = "de.pierreschwang.labymod"
 version = "1.0.0"
 
 plugins.apply("net.labymod.gradle.addon")
@@ -60,14 +60,11 @@ subprojects {
 
 addon {
     addonInfo {
-        namespace("example")
-        displayName("Example Addon")
-        author("Example Author")
-        description("An Example Description!")
+        namespace("resourcepacks24")
+        displayName("Resourcepacks24")
+        author("Pierre Maurice Schwang")
+        description("Resourcepacks24")
         version(System.getenv().getOrDefault("VERSION", "0.0.0"))
-
-        //you can add maven dependencies here. the dependencies will then be downloaded by labymod.
-        //mavenDependencies().add(MavenDependency("https://repo.maven.apache.org/maven2/", "com.google.guava:guava:31.1-jre"))
     }
     
     internalRelease()

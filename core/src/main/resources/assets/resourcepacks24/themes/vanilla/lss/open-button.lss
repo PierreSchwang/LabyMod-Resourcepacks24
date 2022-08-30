@@ -1,0 +1,16 @@
+HorizontalList {
+  alignment-x: center;
+  height: 100%;
+  left: 50%;
+  width: fit-content;
+}
+
+Div {
+  width: 200;
+  height: 100%;
+}
+
+Button {
+  bottom: 28;
+  right: 155;
+}

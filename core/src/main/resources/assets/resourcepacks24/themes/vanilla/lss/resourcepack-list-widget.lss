@@ -1,0 +1,58 @@
+ResourcepackListEntry {
+  height: 55;
+  width: 100%;
+}
+
+.resourcepack-wrapper {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  orientation: horizontal;
+}
+
+.resourcepack-thumbnail {
+  margin: 3 0 3 3;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: height;
+}
+
+.resourcepack-text-wrapper {
+  margin: 6 6 6 3;
+  left: 0;
+  top: 0;
+}
+
+
+.resourcepack-name-wrapper {
+  left: 2;
+  top: 1;
+  space-between-entries: 4;
+  height: fit-content;
+  width: fit-content;
+  max-width: 160;
+}
+
+.resourcepack-name {
+  left: 0;
+  top: 0;
+}
+
+.resourcepack-author {
+  alignment-y: center;
+  font-size: 0.6;
+  left: 0;
+  top: 0;
+}
+
+.resourcepack-description-wrapper {
+  left: 2;
+  top: 14;
+  right: 0;
+  font-size: 0.7;
+  fit-width: false;
+  text-color: gray;
+  max-width: 140;
+}

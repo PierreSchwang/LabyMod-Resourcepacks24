@@ -11,6 +11,7 @@ repositories {
 dependencies {
     labyProcessor()
     api(project(":api"))
+    implementation("org.sejda.imageio:webp-imageio:0.1.6")
 }
 
 addon {

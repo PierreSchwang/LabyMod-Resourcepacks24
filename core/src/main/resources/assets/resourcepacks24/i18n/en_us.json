@@ -1,0 +1,14 @@
+{
+  "resourcepacks24" : {
+    "settings" : {
+      "name" : "Resourcepacks24",
+      "enabled" : {
+        "name" : "Enabled"
+      }
+    },
+    "pagination" : {
+      "page-indicator" : "Page %d of %d"
+    },
+    "loading": "Loading..."
+  }
+}

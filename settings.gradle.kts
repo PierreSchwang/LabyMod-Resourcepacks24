@@ -1,4 +1,4 @@
-rootProject.name = "labymod4-addon-template"
+rootProject.name = "labymod4-addon-resourcepacks24"
 
 include(":api")
 include(":core")
