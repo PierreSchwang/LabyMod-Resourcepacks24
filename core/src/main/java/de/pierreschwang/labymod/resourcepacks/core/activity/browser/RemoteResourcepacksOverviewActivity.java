@@ -2,6 +2,7 @@ package de.pierreschwang.labymod.resourcepacks.core.activity.browser;
 
 import com.google.inject.Inject;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
+import de.pierreschwang.labymod.resourcepacks.api.execution.IMinecraftTickExecutor;
 import de.pierreschwang.labymod.resourcepacks.core.activity.browser.content.TrendingResourcepacksWidget;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -40,7 +41,11 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
     FlexibleContentWidget wrapper = new FlexibleContentWidget().addId("resourcepack-main-wrapper");
     wrapper.addChild(new FlexibleContentEntry(buildSidebar(), false));
     wrapper.addChild(new FlexibleContentEntry(
-        new TrendingResourcepacksWidget(LabyGuice.getInstance(IResourcepacks24.class), 0),
+        new TrendingResourcepacksWidget(
+            LabyGuice.getInstance(IResourcepacks24.class),
+            LabyGuice.getInstance(IMinecraftTickExecutor.class),
+            0
+        ),
         true
     ));
     this.document.addChild(wrapper);
@@ -59,7 +64,8 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
     resourcepacks24.categories().whenComplete((strings, throwable) -> {
       this.labyAPI.minecraft().executeNextTick(() -> {
         for (String category : strings) {
-          listWidget.addChildInitialized(new ButtonWidget().updateComponent(Component.text(category)));
+          listWidget.addChildInitialized(
+              new ButtonWidget().updateComponent(Component.text(category)));
         }
       });
     });

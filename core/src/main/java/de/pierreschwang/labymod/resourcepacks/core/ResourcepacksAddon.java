@@ -4,6 +4,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Singleton;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
+import de.pierreschwang.labymod.resourcepacks.api.execution.IMinecraftTickExecutor;
 import de.pierreschwang.labymod.resourcepacks.api.impl.Resourcepacks24OkHttpImpl;
 import de.pierreschwang.labymod.resourcepacks.core.activity.overlay.ResourcepackOverlayActivity;
 import net.labymod.api.Laby;
@@ -22,8 +23,12 @@ public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
   protected void enable() {
     this.registerSettingCategory();
 
-    LabyGuice.addModules(binder -> binder.bind(IResourcepacks24.class)
-        .toInstance(new Resourcepacks24OkHttpImpl(LABY_RP_TOKEN)));
+    LabyGuice.addModules(binder -> {
+      binder.bind(IResourcepacks24.class)
+          .toInstance(new Resourcepacks24OkHttpImpl(LABY_RP_TOKEN));
+      binder.bind(IMinecraftTickExecutor.class)
+          .toInstance(command -> labyAPI().minecraft().executeNextTick(command));
+    });
 
     labyAPI().activityOverlayService().registerOverlay(
         "resource_pack_settings", ResourcepackOverlayActivity.class,

@@ -6,10 +6,7 @@ Scroll {
 }
 
 Scrollbar {
-  width: 5;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  width: 3;
 }
 
 Paginated {
@@ -28,7 +25,7 @@ Paginated {
 
 .entry-container {
   width: 100%;
-  height: 100%;
+  height: fit-content;
 }
 
 .pagination-button {

@@ -1,12 +1,12 @@
 package de.pierreschwang.labymod.resourcepacks.core.activity.browser.content;
 
-import com.google.inject.Inject;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.PaginatedResult;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.PaginatedResult.Paginator;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.Resourcepack;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
 import de.pierreschwang.labymod.resourcepacks.core.widget.PaginatedWidget;
 import de.pierreschwang.labymod.resourcepacks.core.widget.ResourcepackListEntryWidget;
+import java.util.concurrent.Executor;
 import net.kyori.adventure.text.Component;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
@@ -20,12 +20,14 @@ public class TrendingResourcepacksWidget extends DivWidget {
 
   private final IResourcepacks24 resourcepacks24;
 
+  private final Executor syncExecutor;
   private int page;
   private PaginatedResult<Resourcepack> trending;
 
-  @Inject
-  public TrendingResourcepacksWidget(IResourcepacks24 resourcepacks24, int page) {
+  public TrendingResourcepacksWidget(IResourcepacks24 resourcepacks24, Executor syncExecutor,
+      int page) {
     this.resourcepacks24 = resourcepacks24;
+    this.syncExecutor = syncExecutor;
     this.page = page;
   }
 
@@ -34,16 +36,15 @@ public class TrendingResourcepacksWidget extends DivWidget {
     super.initialize(parent);
     if (trending == null) {
       addChild(ComponentWidget.component(LOADING_TEXT));
-      resourcepacks24.trending(page).whenComplete((resourcepacks, throwable) -> {
+      resourcepacks24.trending(page).whenCompleteAsync((resourcepacks, throwable) -> {
         this.trending = new PaginatedResult<>(resourcepacks,
             new Paginator(page, 5, 0, resourcepacks.size(), resourcepacks.size() * 5, 20));
         reInitialize();
-      });
+      }, syncExecutor);
       return;
     }
-    labyAPI.minecraft().executeNextTick(() -> addChildInitialized(new PaginatedWidget<>(
-        trending, ResourcepackListEntryWidget::new, this::switchPage
-    )));
+    addChildInitialized(
+        new PaginatedWidget<>(trending, ResourcepackListEntryWidget::new, this::switchPage));
   }
 
   private void switchPage(int page) {

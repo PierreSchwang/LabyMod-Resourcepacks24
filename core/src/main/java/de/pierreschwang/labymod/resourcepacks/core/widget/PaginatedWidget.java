@@ -35,19 +35,19 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
     this.paginatedResult = paginatedResult;
     this.entryWidgetTransformer = entryWidgetTransformer;
     this.changePageConsumer = changePageConsumer;
+    addChild(scrollWidgetForCurrentPage());
   }
 
   @Override
   public void initialize(Parent parent) {
     super.initialize(parent);
-    addChildInitialized(scrollWidgetForCurrentPage());
   }
 
   private Widget controlWidget() {
     HorizontalListWidget container = new HorizontalListWidget().addId("control-container");
     container.addEntry(button(
         0, 0, () -> changePageConsumer.accept(paginatedResult.paginator().currentPage() - 1),
-        paginatedResult.paginator().currentPage() == 1
+        paginatedResult.paginator().currentPage() == 0
     ));
     String indicator = I18n.translate(
         "resourcepacks24.pagination.page-indicator",
@@ -76,12 +76,11 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
   private ScrollWidget scrollWidgetForCurrentPage() {
     VerticalListWidget<W> list = new VerticalListWidget<>();
     for (T data : paginatedResult.data()) {
-      list.addChild(entryWidgetTransformer.apply(data), false);
+      list.addChildInitialized(entryWidgetTransformer.apply(data), false);
     }
     list.spaceBetweenEntries().set(3f);
     list.addId("entry-container");
     ScrollWidget widget = new ScrollWidget(list);
-    widget.scrollSpeed().set(1f);
     widget.addChildInitialized(controlWidget(), false);
     return widget;
   }

@@ -1,6 +1,7 @@
 ResourcepackListEntry {
   height: 55;
   width: 100%;
+  background-color: rgba(50, 50, 50, 50);
 }
 
 .resourcepack-wrapper {
