@@ -2,6 +2,7 @@ package de.pierreschwang.labymod.resourcepacks.api.definition;
 
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.PaginatedResult;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.Resourcepack;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
@@ -94,17 +95,37 @@ public interface IResourcepacks24 {
    *                       ({@link Resourcepack#id()})
    * @return The direct & signed download link for the resourcepack.
    */
-  @NotNull CompletableFuture<@Nullable String> download(int resourcePackId);
+  @NotNull CompletableFuture<@Nullable String> downloadUrl(int resourcePackId);
+
+  /**
+   * Shorthand for {@link #downloadUrl(int)} using a resourcepack object.
+   *
+   * @param resourcepack The resourcepack to get the download link for.
+   * @return The direct & signed download link for the resourcepack
+   * @see #downloadUrl(int)
+   */
+  default @NotNull CompletableFuture<@Nullable String> downloadUrl(
+      @NotNull Resourcepack resourcepack) {
+    return downloadUrl(resourcepack.id());
+  }
+
+  /**
+   * Downloads a resourcepack identified by the id and makes it available to the returned stream.
+   *
+   * @param resourcePackId The id of the resourcepack to download
+   * @return A stream containing the bytes of the resourcepack
+   */
+  @NotNull CompletableFuture<InputStream> download(int resourcePackId);
+
 
   /**
    * Shorthand for {@link #download(int)} using a resourcepack object.
    *
-   * @param resourcepack The resourcepack to get the download link for.
-   * @return The direct & signed download link for the resourcepack
+   * @param resourcepack The resourcepack to download
+   * @return A stream containing the bytes of the resourcepack
    * @see #download(int)
    */
-  default @NotNull CompletableFuture<@Nullable String> download(
-      @NotNull Resourcepack resourcepack) {
+  default @NotNull CompletableFuture<InputStream> download(Resourcepack resourcepack) {
     return download(resourcepack.id());
   }
 

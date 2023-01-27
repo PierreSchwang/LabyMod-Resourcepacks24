@@ -1,39 +1,36 @@
 package de.pierreschwang.labymod.resourcepacks.core;
 
-import com.google.inject.Binder;
-import com.google.inject.Module;
-import com.google.inject.Singleton;
+import de.pierreschwang.labymod.resourcepacks.api.client.IResourcepackAdapter;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
-import de.pierreschwang.labymod.resourcepacks.api.execution.IMinecraftTickExecutor;
 import de.pierreschwang.labymod.resourcepacks.api.impl.Resourcepacks24OkHttpImpl;
 import de.pierreschwang.labymod.resourcepacks.core.activity.overlay.ResourcepackOverlayActivity;
-import net.labymod.api.Laby;
+import de.pierreschwang.labymod.resourcepacks.core.generated.DefaultReferenceStorage;
 import net.labymod.api.addon.LabyAddon;
-import net.labymod.api.inject.LabyGuice;
-import net.labymod.api.inject.LabyInjector;
-import net.labymod.api.models.addon.annotation.AddonListener;
+import net.labymod.api.client.gui.screen.NamedScreen;
+import net.labymod.api.models.addon.annotation.AddonMain;
 
-@Singleton
-@AddonListener
+@AddonMain
 public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
 
   private static final String LABY_RP_TOKEN = "6b514bb5-cb55-4f68-8c62-3031cf871a72";
+
+  private IResourcepacks24 resourcepacks24;
+
+  private IResourcepackAdapter adapter;
 
   @Override
   protected void enable() {
     this.registerSettingCategory();
 
-    LabyGuice.addModules(binder -> {
-      binder.bind(IResourcepacks24.class)
-          .toInstance(new Resourcepacks24OkHttpImpl(LABY_RP_TOKEN));
-      binder.bind(IMinecraftTickExecutor.class)
-          .toInstance(command -> labyAPI().minecraft().executeNextTick(command));
-    });
-
-    labyAPI().activityOverlayService().registerOverlay(
-        "resource_pack_settings", ResourcepackOverlayActivity.class,
+    this.resourcepacks24 = new Resourcepacks24OkHttpImpl(LABY_RP_TOKEN);
+    labyAPI().activityOverlayRegistry().register(
+        NamedScreen.RESOURCE_PACK_SETTINGS, ResourcepackOverlayActivity.class,
         parentScreen -> new ResourcepackOverlayActivity(parentScreen, this)
     );
+
+    DefaultReferenceStorage storage = getReferenceStorageAccessor();
+    this.adapter = storage.iResourcepackAdapter();
+
   }
 
   @Override
@@ -41,4 +38,7 @@ public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
     return ResourcepacksConfiguration.class;
   }
 
+  public IResourcepacks24 resourcepacks24() {
+    return resourcepacks24;
+  }
 }

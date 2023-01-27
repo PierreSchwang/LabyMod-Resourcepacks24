@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import de.pierreschwang.labymod.resourcepacks.api.definition.AbstractResourcepacks24;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,12 +23,31 @@ public class Resourcepacks24OkHttpImpl extends AbstractResourcepacks24 {
   private final Gson gson;
   private final OkHttpClient client;
 
-
   public Resourcepacks24OkHttpImpl(String token) {
     super(token);
     this.executorPool = Executors.newCachedThreadPool();
     this.gson = new Gson();
     this.client = new OkHttpClient();
+  }
+
+  @Override
+  public @NotNull CompletableFuture<InputStream> download(int resourcePackId) {
+    return downloadUrl(resourcePackId).thenApply(downloadLink -> {
+      Request request = new Builder()
+          .url(downloadLink)
+          .header("RP24-Token", token)
+          .method("GET", null)
+          .build();
+      try(Response response = this.client.newCall(request).execute()) {
+        ResponseBody body = response.body();
+        if (response.code() != 200 || body == null) {
+          throw new RuntimeException("Expected Status Code 200 and body");
+        }
+        return body.byteStream();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
   }
 
   @Override

@@ -9,6 +9,11 @@
     "pagination" : {
       "page-indicator" : "Page %d of %d"
     },
+    "sidebar": {
+      "browse": "Browse...",
+      "search": "Search...",
+      "categories": "Categories"
+    },
     "loading": "Loading..."
   }
 }

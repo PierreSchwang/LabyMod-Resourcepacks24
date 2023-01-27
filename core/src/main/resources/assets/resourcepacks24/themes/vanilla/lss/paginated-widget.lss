@@ -16,6 +16,10 @@ Paginated {
   top: 0;
 }
 
+.paginated-scroll-widget {
+  margin-bottom: 35;
+}
+
 .control-container {
   height: 30;
   width: 50%;

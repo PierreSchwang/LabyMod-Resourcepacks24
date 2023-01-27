@@ -3,6 +3,7 @@ package de.pierreschwang.labymod.resourcepacks.api.definition;
 import com.google.gson.reflect.TypeToken;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.PaginatedResult;
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.Resourcepack;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -114,7 +115,7 @@ public abstract class AbstractResourcepacks24 implements IResourcepacks24 {
   }
 
   @Override
-  public @NotNull CompletableFuture<@NotNull String> download(int resourcePackId) {
+  public @NotNull CompletableFuture<@NotNull String> downloadUrl(int resourcePackId) {
     return query(
         "download/" + resourcePackId,
         TYPE_STRING,

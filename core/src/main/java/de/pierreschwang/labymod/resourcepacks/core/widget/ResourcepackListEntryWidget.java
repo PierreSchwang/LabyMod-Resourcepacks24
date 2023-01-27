@@ -1,7 +1,7 @@
 package de.pierreschwang.labymod.resourcepacks.core.widget;
 
 import de.pierreschwang.labymod.resourcepacks.api.dao.result.Resourcepack;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;

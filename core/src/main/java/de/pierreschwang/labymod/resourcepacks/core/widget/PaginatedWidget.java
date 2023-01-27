@@ -12,6 +12,7 @@ import net.labymod.api.client.gui.screen.widget.action.Pressable;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.DivWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
+import net.labymod.api.client.gui.screen.widget.widgets.layout.GridWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
@@ -23,7 +24,7 @@ import net.labymod.api.util.I18n;
 public class PaginatedWidget<T, W extends Widget> extends DivWidget {
 
   private static final ResourceLocation SPRITE = ResourceLocation
-      .create("resourcepacks24", "sprites/pagination.png");
+      .create("resourcepacks24", "sprites/rp24.png");
 
   private final Function<T, W> entryWidgetTransformer;
   private final Consumer<Integer> changePageConsumer;
@@ -36,6 +37,7 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
     this.entryWidgetTransformer = entryWidgetTransformer;
     this.changePageConsumer = changePageConsumer;
     addChild(scrollWidgetForCurrentPage());
+    addChild(controlWidget());
   }
 
   @Override
@@ -51,7 +53,7 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
     ));
     String indicator = I18n.translate(
         "resourcepacks24.pagination.page-indicator",
-        paginatedResult.paginator().currentPage(),
+        paginatedResult.paginator().currentPage() + 1,
         paginatedResult.paginator().totalPages()
     );
     container.addEntry(ComponentWidget.text(indicator));
@@ -59,12 +61,13 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
         1, 0, () -> changePageConsumer.accept(paginatedResult.paginator().currentPage() + 1),
         paginatedResult.paginator().currentPage() == paginatedResult.paginator().totalPages()
     ));
+    container.spaceBetweenEntries().set(5);
     return container;
   }
 
   private ButtonWidget button(int slotX, int slotY, Pressable pressable, boolean disabled) {
     ButtonWidget widget = ButtonWidget.icon(
-        Icon.sprite32(SPRITE, slotX, slotY), disabled ? null : pressable
+        Icon.sprite(SPRITE, slotX << 4, slotY << 4, 16, 16, 64, 64), disabled ? null : pressable
     );
     if (disabled) {
       widget.setEnabled(false);
@@ -81,7 +84,7 @@ public class PaginatedWidget<T, W extends Widget> extends DivWidget {
     list.spaceBetweenEntries().set(3f);
     list.addId("entry-container");
     ScrollWidget widget = new ScrollWidget(list);
-    widget.addChildInitialized(controlWidget(), false);
+    widget.addId("paginated-scroll-widget");
     return widget;
   }
 

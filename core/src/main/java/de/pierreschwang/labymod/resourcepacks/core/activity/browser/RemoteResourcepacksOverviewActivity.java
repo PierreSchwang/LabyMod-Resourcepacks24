@@ -1,11 +1,9 @@
 package de.pierreschwang.labymod.resourcepacks.core.activity.browser;
 
-import com.google.inject.Inject;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
-import de.pierreschwang.labymod.resourcepacks.api.execution.IMinecraftTickExecutor;
 import de.pierreschwang.labymod.resourcepacks.core.activity.browser.content.TrendingResourcepacksWidget;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.LabyScreen;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
@@ -19,7 +17,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWi
 import net.labymod.api.client.gui.screen.widget.widgets.layout.entry.FlexibleContentEntry;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.HrWidget;
-import net.labymod.api.inject.LabyGuice;
+import net.labymod.api.util.I18n;
 import org.jetbrains.annotations.Nullable;
 
 @AutoActivity
@@ -30,7 +28,6 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
 
   private final IResourcepacks24 resourcepacks24;
 
-  @Inject
   public RemoteResourcepacksOverviewActivity(IResourcepacks24 resourcepacks24) {
     this.resourcepacks24 = resourcepacks24;
   }
@@ -41,11 +38,7 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
     FlexibleContentWidget wrapper = new FlexibleContentWidget().addId("resourcepack-main-wrapper");
     wrapper.addChild(new FlexibleContentEntry(buildSidebar(), false));
     wrapper.addChild(new FlexibleContentEntry(
-        new TrendingResourcepacksWidget(
-            LabyGuice.getInstance(IResourcepacks24.class),
-            LabyGuice.getInstance(IMinecraftTickExecutor.class),
-            0
-        ),
+        new TrendingResourcepacksWidget(this.resourcepacks24, 0),
         true
     ));
     this.document.addChild(wrapper);
@@ -54,13 +47,16 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
   private Widget buildSidebar() {
     VerticalListWidget<Widget> listWidget = new VerticalListWidget<>().addId("sidebar-container");
     listWidget.addChild(new TextFieldWidget()
-        .placeholder(Component.text("Search..."))
+        .placeholder(Component.text(I18n.translate("resourcepacks24.sidebar.search")))
+        .updateListener(this::updateSearchContent)
         .addId("search-field")
     );
     listWidget.addChild(new HrWidget());
-    listWidget.addChild(new ButtonWidget().updateComponent(Component.text("Browse")));
+    listWidget.addChild(new ButtonWidget().updateComponent(
+        Component.text(I18n.translate("resourcepacks24.sidebar.browse"))));
     listWidget.addChild(new HrWidget());
-    listWidget.addChild(ComponentWidget.text("Categories", NamedTextColor.GRAY));
+    listWidget.addChild(
+        ComponentWidget.i18n("resourcepacks24.sidebar.categories", NamedTextColor.GRAY));
     resourcepacks24.categories().whenComplete((strings, throwable) -> {
       this.labyAPI.minecraft().executeNextTick(() -> {
         for (String category : strings) {
@@ -70,6 +66,10 @@ public class RemoteResourcepacksOverviewActivity extends SimpleActivity {
       });
     });
     return listWidget;
+  }
+
+  private void updateSearchContent(String query) {
+
   }
 
   @Override
