@@ -44,7 +44,7 @@ public interface IResourcepacks24 {
    * @return A list containing the current trending resourcepacks.
    */
   @NotNull CompletableFuture<@NotNull List<@NotNull Resourcepack>> trending(
-      @Range(from = 0, to = 3) int page);
+      @Range(from = 0, to = Integer.MAX_VALUE) int page);
 
   /**
    * Retrieves the currently promoted resourcepacks, based on Resourcepacks24.
@@ -71,7 +71,7 @@ public interface IResourcepacks24 {
    * @return A list containing the resourcepacks of the week of the selected page.
    */
   @NotNull CompletableFuture<@NotNull List<@NotNull Resourcepack>> ofTheWeek(
-      @Range(from = 0, to = 5) int page);
+      @Range(from = 1, to = 5) int page);
 
   /**
    * Retrieves a specific resourcepack by its internal id (specified by Resourcepacks24)

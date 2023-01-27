@@ -1,0 +1,7 @@
+.search-widget-input {
+  height: 20;
+  alignment-x: center;
+  top: 0;
+  width: 100%;
+  margin: 2;
+}

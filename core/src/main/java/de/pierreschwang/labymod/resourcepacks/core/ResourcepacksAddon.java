@@ -30,7 +30,6 @@ public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
 
     DefaultReferenceStorage storage = getReferenceStorageAccessor();
     this.adapter = storage.iResourcepackAdapter();
-
   }
 
   @Override
@@ -40,5 +39,9 @@ public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
 
   public IResourcepacks24 resourcepacks24() {
     return resourcepacks24;
+  }
+
+  public IResourcepackAdapter adapter() {
+    return adapter;
   }
 }
