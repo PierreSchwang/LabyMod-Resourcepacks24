@@ -3,6 +3,7 @@ Scroll {
   width: 100%;
   top: 0;
   left: 0;
+  margin-bottom: 35;
 }
 
 Scrollbar {
@@ -14,3 +15,20 @@ VerticalList {
   width: 100%;
 }
 
+.controls {
+  width: fit-content;
+  bottom: 0;
+  left: 50%;
+  alignment-x: center;
+  orientation: horizontal;
+  space-between-entries: 8;
+  height: fit-content;
+  margin: 10 0 10 0;
+}
+
+.page-indicator {
+  alignment-y: center;
+  height: 100%;
+  width: fit-content;
+  height: fit-content;
+}

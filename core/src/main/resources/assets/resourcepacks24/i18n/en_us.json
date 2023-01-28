@@ -7,12 +7,14 @@
       }
     },
     "pagination" : {
-      "page-indicator" : "Page %d of %d"
+      "page-indicator" : "Page %d"
     },
     "sidebar": {
       "browse": "Browse...",
       "search": "Search...",
-      "categories": "Categories"
+      "categories": "Categories",
+      "newest": "Newest",
+      "of-the-week": "Of the Week"
     },
     "loading": "Loading...",
     "no-data": "No data to display"

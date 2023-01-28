@@ -11,4 +11,7 @@ public class Components {
     public static final Component NO_DATA = Component.translatable("resourcepacks24.no-data")
             .color(NamedTextColor.RED);
 
+    public static final Component PAGE = Component.translatable("resourcepacks24.no-data")
+            .color(NamedTextColor.RED);
+
 }

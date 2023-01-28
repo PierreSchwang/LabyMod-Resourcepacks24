@@ -8,12 +8,17 @@ import de.pierreschwang.labymod.resourcepacks.core.activity.overlay.Resourcepack
 import de.pierreschwang.labymod.resourcepacks.core.generated.DefaultReferenceStorage;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.screen.NamedScreen;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
 import java.util.concurrent.CompletableFuture;
 
 @AddonMain
 public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
+
+
+  public static final ResourceLocation ICONS = ResourceLocation
+          .create("resourcepacks24", "sprites/icons.png");
 
   private static final String LABY_RP_TOKEN = "6b514bb5-cb55-4f68-8c62-3031cf871a72";
 

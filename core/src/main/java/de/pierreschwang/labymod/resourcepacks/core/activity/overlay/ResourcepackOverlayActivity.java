@@ -20,8 +20,6 @@ import org.jetbrains.annotations.Nullable;
 @Link("open-button.lss")
 public class ResourcepackOverlayActivity extends AbstractLayerActivity {
 
-    private static final ResourceLocation SPRITE = ResourceLocation
-            .create("resourcepacks24", "sprites/pagination.png");
     private final ResourcepacksAddon addon;
 
     public ResourcepackOverlayActivity(ScreenInstance screenInstance, ResourcepacksAddon addon) {
@@ -34,7 +32,7 @@ public class ResourcepackOverlayActivity extends AbstractLayerActivity {
         super.initialize(parent);
         HorizontalListWidget wrapper = new HorizontalListWidget();
         DivWidget inner = new DivWidget();
-        inner.addChild(ButtonWidget.icon(Icon.sprite32(SPRITE, 2, 0),
+        inner.addChild(ButtonWidget.icon(Icon.sprite32(ResourcepacksAddon.ICONS, 0, 0),
                 () -> Laby.labyAPI().minecraft().minecraftWindow()
                         .displayScreen(new NavigationWrappedActivity(this.addon))));
 
