@@ -1,10 +1,10 @@
 package de.pierreschwang.labymod.resourcepacks.core.activity.browser;
 
+import de.pierreschwang.labymod.resourcepacks.api.pagination.Paginator;
 import de.pierreschwang.labymod.resourcepacks.api.util.StringUtil;
 import de.pierreschwang.labymod.resourcepacks.core.ResourcepacksAddon;
 import de.pierreschwang.labymod.resourcepacks.core.widget.ListingWidget;
 import de.pierreschwang.labymod.resourcepacks.core.widget.SearchWidget;
-import de.pierreschwang.labymod.resourcepacks.core.widget.resourcepack.IntermediateResolvingWidget;
 import de.pierreschwang.labymod.resourcepacks.core.widget.resourcepack.ResourcepackListEntryWidget;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
@@ -40,8 +40,9 @@ public class NavigationWrappedActivity extends SimpleActivity {
 
     public NavigationWrappedActivity(ResourcepacksAddon addon) {
         this.addon = addon;
-        this.activeWindow = new IntermediateResolvingWidget<>(
-            this.addon.resourcepacks24()::trending, ResourcepackListEntryWidget::new, ListingWidget.UpdateStrategy.APPEND
+        this.activeWindow = new ListingWidget<>(
+                Paginator.peeking(this.addon.resourcepacks24()::trending),
+                ResourcepackListEntryWidget::new
         );
     }
 
@@ -64,18 +65,17 @@ public class NavigationWrappedActivity extends SimpleActivity {
         listWidget.addChild(new SearchWidget(s -> System.out.println("Search: " + s)));
         listWidget.addChild(new HrWidget());
         listWidget.addChild(ButtonWidget.i18n("resourcepacks24.sidebar.newest", () -> {
-            this.activeWindow = ListingWidget.ofFuture(
-                    ResourcepackListEntryWidget::new, ListingWidget.UpdateStrategy.REPLACE,
-                    this.addon.resourcepacks24().newest()
+            this.activeWindow = new ListingWidget<>(
+                    Paginator.single(this.addon.resourcepacks24().newest()),
+                    ResourcepackListEntryWidget::new
             );
             this.labyAPI.minecraft().executeNextTick(this::reload);
         }));
 
         listWidget.addChild(ButtonWidget.i18n("resourcepacks24.sidebar.of-the-week", () -> {
-            this.activeWindow = new IntermediateResolvingWidget<>(
-                    this.addon.resourcepacks24()::ofTheWeek,
-                    ResourcepackListEntryWidget::new,
-                    ListingWidget.UpdateStrategy.APPEND
+            this.activeWindow = new ListingWidget<>(
+                    Paginator.peeking(this.addon.resourcepacks24()::ofTheWeek),
+                    ResourcepackListEntryWidget::new
             );
             this.labyAPI.minecraft().executeNextTick(this::reload);
         }));
@@ -100,7 +100,7 @@ public class NavigationWrappedActivity extends SimpleActivity {
     }
 
     private void navigateToCategory(String category) {
-      // TODO
+        // TODO
     }
 
 }
