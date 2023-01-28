@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     labyApi("api")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.google.guava:guava:31.1-jre") // guava-concurrent is missing in api-project
 }
 

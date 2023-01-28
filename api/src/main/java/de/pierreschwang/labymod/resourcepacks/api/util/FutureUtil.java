@@ -1,5 +1,7 @@
 package de.pierreschwang.labymod.resourcepacks.api.util;
 
+import net.labymod.api.Laby;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -28,12 +30,12 @@ public class FutureUtil {
                                                  int counter,
                                                  Function<Integer, CompletableFuture<T>> futureFunction,
                                                  Consumer<T> result) {
-        futureFunction.apply(counter).whenComplete((t, throwable) -> {
+        futureFunction.apply(counter).whenCompleteAsync((t, throwable) -> {
             result.accept(t);
             if (until.test(t)) {
                 internalResolveUntil(until, counter + 1, futureFunction, result);
             }
-        });
+        }, Laby.labyAPI().minecraft()::executeNextTick);
     }
 
 }

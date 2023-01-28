@@ -71,7 +71,7 @@ public interface IResourcepacks24 {
    * @return A list containing the resourcepacks of the week of the selected page.
    */
   @NotNull CompletableFuture<@NotNull List<@NotNull Resourcepack>> ofTheWeek(
-      @Range(from = 1, to = 5) int page);
+      @Range(from = 1, to = Integer.MAX_VALUE) int page);
 
   /**
    * Retrieves a specific resourcepack by its internal id (specified by Resourcepacks24)

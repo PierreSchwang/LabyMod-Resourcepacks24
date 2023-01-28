@@ -2,12 +2,15 @@ package de.pierreschwang.labymod.resourcepacks.core;
 
 import de.pierreschwang.labymod.resourcepacks.api.client.IResourcepackAdapter;
 import de.pierreschwang.labymod.resourcepacks.api.definition.IResourcepacks24;
-import de.pierreschwang.labymod.resourcepacks.api.impl.Resourcepacks24OkHttpImpl;
+import de.pierreschwang.labymod.resourcepacks.api.impl.Resourcepack24NativeHttpImpl;
+import de.pierreschwang.labymod.resourcepacks.api.util.FutureUtil;
 import de.pierreschwang.labymod.resourcepacks.core.activity.overlay.ResourcepackOverlayActivity;
 import de.pierreschwang.labymod.resourcepacks.core.generated.DefaultReferenceStorage;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.screen.NamedScreen;
 import net.labymod.api.models.addon.annotation.AddonMain;
+
+import java.util.concurrent.CompletableFuture;
 
 @AddonMain
 public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
@@ -22,7 +25,7 @@ public class ResourcepacksAddon extends LabyAddon<ResourcepacksConfiguration> {
   protected void enable() {
     this.registerSettingCategory();
 
-    this.resourcepacks24 = new Resourcepacks24OkHttpImpl(LABY_RP_TOKEN);
+    this.resourcepacks24 = new Resourcepack24NativeHttpImpl(LABY_RP_TOKEN);
     labyAPI().activityOverlayRegistry().register(
         NamedScreen.RESOURCE_PACK_SETTINGS, ResourcepackOverlayActivity.class,
         parentScreen -> new ResourcepackOverlayActivity(parentScreen, this)
